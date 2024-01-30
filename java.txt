@@ -1,0 +1,72 @@
+import java.util.Scanner;
+
+public class LoginProgram {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int maxAttempts = 3;
+
+        // Correct username and password for authentication
+        String correctUsername = "user123";
+        String correctPassword = "pass123";
+
+        // Loop for login attempts
+        for (int attempt = 1; attempt <= maxAttempts; attempt++) {
+            System.out.println("Attempt " + attempt);
+
+            // Accept username input
+            System.out.print("Enter username: ");
+            String enteredUsername = scanner.nextLine();
+
+            // Hide password input
+            System.out.print("Enter password: ");
+            String enteredPassword = hidePasswordInput();
+
+            // Check if entered credentials are correct
+            if (enteredUsername.equals(correctUsername) && enteredPassword.equals(correctPassword)) {
+                System.out.println("Login successful!");
+                break; // Exit the loop if login is successful
+            } else {
+                System.out.println("Incorrect username or password. Please try again.");
+            }
+
+            // Provide remaining attempts or inform about maximum attempts reached
+            if (attempt < maxAttempts) {
+                System.out.println("You have " + (maxAttempts - attempt) + " attempt(s) remaining.\n");
+            } else {
+                System.out.println("Maximum attempts reached. Login failed.");
+            }
+        }
+
+        scanner.close();
+    }
+
+    // Helper class to hide password input
+    private static String hidePasswordInput() {
+        ConsoleEraser consoleEraser = new ConsoleEraser();
+        StringBuilder password = new StringBuilder();
+
+        while (true) {
+            char c = consoleEraser.getSecretInput();
+            if (c == '\n' || c == '\r') {
+                break;
+            }
+            password.append(c);
+        }
+
+        return password.toString();
+    }
+}
+
+class ConsoleEraser {
+    // Helper class to hide password input
+    public char getSecretInput() {
+        char password = 0;
+        try {
+            password = (char) System.in.read();
+            System.out.print("*"); // Print '*' for each character to hide password
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return password;
+    }
+}
